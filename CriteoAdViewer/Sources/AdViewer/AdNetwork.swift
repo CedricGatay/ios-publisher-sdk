@@ -97,7 +97,7 @@ private func googleNetwork(_ controller: AdViewController) -> AdNetwork {
       AdFormat.native: "/140800857/Endeavour_Native",
       AdFormat.interstitial: "/140800857/Endeavour_Interstitial_320x480",
       AdFormat.video: "/140800857/Endeavour_InterstitialVideo_320x480",
-      AdFormat.rewarded: "ca-app-pub-3940256099942544/1712485313",
+      AdFormat.rewarded: "/140800857/Endeavour_InterstitialVideo_320x480",//"ca-app-pub-3940256099942544/1712485313",
     ], adViewBuilder: GoogleAdViewBuilder(controller: controller))
 }
 
@@ -111,12 +111,14 @@ private func moPubNetwork(controller: AdViewController) -> AdNetwork {
       AdFormat.banner300x250,
       AdFormat.interstitial,
       AdFormat.video,
+      AdFormat.rewarded,
     ],
     defaultAdUnits: [
       AdFormat.banner320x50: mopubBanner320x50AdUnitId,
       AdFormat.banner300x250: "69942486c90c4cd4b3c627ba613509a3",
       AdFormat.interstitial: "966fbbf95ba24ab990e5f037cc674bbc",
       AdFormat.video: "3e16381b52994475b18470d2ffcf360e",
+      AdFormat.rewarded: "73d4ae3675954f6289d3a331dd1aa683"
     ],
     adViewBuilder: MopubAdViewBuilder(
       controller: controller,

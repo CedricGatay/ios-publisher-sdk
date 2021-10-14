@@ -11,11 +11,11 @@
                   "zoneId": 0,
                   "cpm": "1.12",
                   "currency": "EUR",
-                  "width": 320,
-                  "height": 250,
+                  "width": 390,
+                  "height": 844,
                   "ttl": 3600,
                   "displayUrl": "https://localhost:9099/delivery/vast.php",
-                  "isVideo": "true"
+                  "isVideo": true
                 }],
             "requestId": "{{ jsonPath request.body '$.id'}}",
             "consentGiven": true

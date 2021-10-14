@@ -17,6 +17,9 @@
 // limitations under the License.
 //
 
+import MoPubSDK
+import CriteoPublisherSdk
+
 class MopubAdViewBuilder: AdViewBuilder {
   private let logger: MopubLogger
   private let keywords = "key1:value1,key2:value2"
@@ -34,12 +37,16 @@ class MopubAdViewBuilder: AdViewBuilder {
     MoPub.sharedInstance().initializeSdk(with: config)
   }
 
-  func build(config: AdConfig, criteo: Criteo, completion: (AdView) -> Void) {
+  func build(config: AdConfig, criteo: Criteo, completion: @escaping (AdView) -> Void) {
     switch config.adFormat {
     case .sized(.banner, let size):
       completion(.banner(buildBanner(adUnit: config.adUnit, size: size, criteo: criteo)))
     case .flexible(.interstitial), .flexible(.video):
       completion(.interstitial(buildInterstitial(adUnit: config.adUnit, criteo: criteo)))
+    case .flexible(.rewarded):
+        buildRewarded(adUnit: config.adUnit, criteo: criteo) { adView in
+            completion(.interstitial(adView))
+        }
     case _:
       fatalError("Unsupported")
     }
@@ -70,6 +77,18 @@ class MopubAdViewBuilder: AdViewBuilder {
     load(adView, adUnit: adUnit, criteo: criteo)
     return adView
   }
+    
+    private func buildRewarded(adUnit: CRAdUnit, criteo: Criteo, completion: @escaping (CRMPRewardedAd) -> Void){
+        criteo.loadBid(for: adUnit, withContext: contextData) { maybeBid in
+          if let bid = maybeBid {
+            let dummyAdView = MPAdView()
+            criteo.enrichAdObject(dummyAdView, with: bid)
+            let adView = CRMPRewardedAd(adUnit: adUnit, keywords: dummyAdView.keywords)
+            adView.loadAd()
+            completion(adView)
+          }
+        }
+    }
 
   private func load(_ ad: MPLoadableAd, adUnit: CRAdUnit, criteo: Criteo) {
     criteo.loadBid(for: adUnit, withContext: contextData) { maybeBid in
@@ -89,6 +108,24 @@ extension MPInterstitialAdController: InterstitialView, MPLoadableAd {
   func present(viewController: UIViewController) {
     self.show(from: viewController)
   }
+}
+
+struct CRMPRewardedAd: InterstitialView, MPLoadableAd{
+    let adUnit: CRAdUnit
+    let keywords: String?
+
+    func loadAd(){
+        MPRewardedAds.loadRewardedAd(withAdUnitID: adUnit.adUnitId,
+                                     keywords: keywords,
+                                     userDataKeywords: nil,
+                                     mediationSettings: nil)
+    }
+    func present(viewController: UIViewController){
+        MPRewardedAds.presentRewardedAd(forAdUnitID: adUnit.adUnitId,
+                                        from: viewController,
+                                        with: MPReward() // TODO: set the reward somewhere
+        )
+    }
 }
 
 extension MPAdView: MPLoadableAd {}
