@@ -24,8 +24,14 @@
 #import "CR_Logging.h"
 #import "NSUserDefaults+CR_Config.h"
 
+#if DEBUG && TARGET_IPHONE_SIMULATOR  // TODO: remove / disable by default
+// target local wiremock when debug & simulator
+NSString *const CR_ConfigCdbUrl = @"https://localhost:9099";
+#else
 // Production
 NSString *const CR_ConfigCdbUrl = @"https://bidder.criteo.com";
+#endif
+
 NSString *const CR_ConfigAppEventsUrl = @"https://gum.criteo.com/appevent/v1";
 NSString *const CR_ConfigConfigurationUrl = @"https://bidder.criteo.com/config/app";
 

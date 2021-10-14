@@ -89,6 +89,7 @@ private func googleNetwork(_ controller: AdViewController) -> AdNetwork {
       AdFormat.native,
       AdFormat.interstitial,
       AdFormat.video,
+      AdFormat.rewarded,
     ],
     defaultAdUnits: [
       AdFormat.banner320x50: "/140800857/Endeavour_320x50",
@@ -96,6 +97,7 @@ private func googleNetwork(_ controller: AdViewController) -> AdNetwork {
       AdFormat.native: "/140800857/Endeavour_Native",
       AdFormat.interstitial: "/140800857/Endeavour_Interstitial_320x480",
       AdFormat.video: "/140800857/Endeavour_InterstitialVideo_320x480",
+      AdFormat.rewarded: "ca-app-pub-3940256099942544/1712485313",
     ], adViewBuilder: GoogleAdViewBuilder(controller: controller))
 }
 

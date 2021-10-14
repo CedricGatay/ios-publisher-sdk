@@ -34,7 +34,7 @@ struct AdConfig {
       return CRBannerAdUnit(adUnitId: adUnitId, size: size.cgSize())
     case .flexible(.native):
       return CRNativeAdUnit(adUnitId: adUnitId)
-    case .flexible(.interstitial), .flexible(.video):
+    case .flexible(.interstitial), .flexible(.video), .flexible(.rewarded):
       return CRInterstitialAdUnit(adUnitId: adUnitId)
     case _:
       fatalError("Unsupported")

@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Tracking Authorization: \(status.rawValue)")
       })
       SKAdNetwork.registerAppForAdNetworkAttribution()
+      GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [kGADSimulatorID]
     }
     return true
   }
